@@ -18,4 +18,9 @@ public class SupplierDto {
     private String phoneNumber;
     
     private String address;
-}
+
+    @NotNull(message = "Service quality is required")
+    private Double qualiteService;
+
+    @NotNull(message = "Note is required")
+    private Double note;

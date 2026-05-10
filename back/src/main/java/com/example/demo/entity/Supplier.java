@@ -25,4 +25,9 @@ public class Supplier {
     private String phoneNumber;
     
     private String address;
-}
+
+    @Column(nullable = false)
+    private Double qualiteService; // qualité_service
+
+    @Column(nullable = false)
+    private Double note; // note globale
