@@ -1,0 +1,65 @@
+<div class="product-container">
+  <h2>Products Management</h2>
+  
+  <button (click)="openForm()" class="btn btn-primary">Add New Product</button>
+
+  <!-- Form Modal -->
+  <div *ngIf="showForm" class="modal">
+    <div class="modal-content">
+      <span (click)="closeForm()" class="close">&times;</span>
+      <h3>{{ isEditing ? 'Edit Product' : 'Add Product' }}</h3>
+      
+      <form (ngSubmit)="saveProduct()">
+        <div class="form-group">
+          <label>Name:</label>
+          <input type="text" [(ngModel)]="formData.name" name="name" required>
+        </div>
+        <div class="form-group">
+          <label>Description:</label>
+          <textarea [(ngModel)]="formData.description" name="description" rows="4"></textarea>
+        </div>
+        <div class="form-group">
+          <label>Category:</label>
+          <input type="text" [(ngModel)]="formData.category" name="category">
+        </div>
+        <button type="submit" class="btn btn-success">Save</button>
+        <button type="button" (click)="closeForm()" class="btn btn-secondary">Cancel</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- Products List -->
+  <table class="table">
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Name</th>
+        <th>Description</th>
+        <th>Category</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let product of products" [class.active]="selectedProduct?.id === product.id">
+        <td>{{ product.id }}</td>
+        <td>{{ product.name }}</td>
+        <td>{{ product.description }}</td>
+        <td>{{ product.category }}</td>
+        <td>
+          <button (click)="openForm(product)" class="btn btn-info">Edit</button>
+          <button (click)="deleteProduct(product.id!)" class="btn btn-danger">Delete</button>
+          <button (click)="selectProduct(product)" class="btn btn-secondary">View</button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+  <!-- Selected Product Details -->
+  <div *ngIf="selectedProduct" class="details">
+    <h3>Product Details</h3>
+    <p><strong>ID:</strong> {{ selectedProduct.id }}</p>
+    <p><strong>Name:</strong> {{ selectedProduct.name }}</p>
+    <p><strong>Description:</strong> {{ selectedProduct.description }}</p>
+    <p><strong>Category:</strong> {{ selectedProduct.category }}</p>
+  </div>
+</div>

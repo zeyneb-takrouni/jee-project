@@ -1,0 +1,136 @@
+<div class="purchase-history-container">
+  <h2>Purchase History & Supplier Evaluation</h2>
+  
+  <button (click)="openForm()" class="btn btn-primary">Add New History</button>
+
+  <!-- Form Modal -->
+  <div *ngIf="showForm" class="modal">
+    <div class="modal-content">
+      <span (click)="closeForm()" class="close">&times;</span>
+      <h3>{{ isEditing ? 'Edit History' : 'Add History' }}</h3>
+      
+      <form (ngSubmit)="savePurchaseHistory()">
+        <div class="form-group">
+          <label>Supplier:</label>
+          <select [(ngModel)]="formData.supplierId" name="supplierId" required>
+            <option value="">Select a supplier</option>
+            <option *ngFor="let supplier of suppliers" [value]="supplier.id">{{ supplier.name }}</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Product:</label>
+          <select [(ngModel)]="formData.productId" name="productId" required>
+            <option value="">Select a product</option>
+            <option *ngFor="let product of products" [value]="product.id">{{ product.name }}</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Quantity:</label>
+          <input type="number" [(ngModel)]="formData.quantite" name="quantite" required>
+        </div>
+        <div class="form-group">
+          <label>Delivery Delay (days):</label>
+          <input type="number" [(ngModel)]="formData.delaiLivraison" name="delaiLivraison" required>
+        </div>
+        <button type="submit" class="btn btn-success">Save</button>
+        <button type="button" (click)="closeForm()" class="btn btn-secondary">Cancel</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- Evaluation Modal -->
+  <div *ngIf="showEvaluation" class="modal">
+    <div class="modal-content">
+      <span (click)="closeEvaluation()" class="close">&times;</span>
+      <h3>Supplier Evaluation Result</h3>
+      <p><strong>Overall Score:</strong> {{ evaluationResult | number:'1.2-2' }} / 10</p>
+      <button (click)="closeEvaluation()" class="btn btn-secondary">Close</button>
+    </div>
+  </div>
+
+  <!-- Comparison Modal -->
+  <div *ngIf="showComparison" class="modal">
+    <div class="modal-content">
+      <span (click)="closeComparison()" class="close">&times;</span>
+      <h3>Supplier Offers Comparison</h3>
+      <table class="table">
+        <thead>
+          <tr>
+            <th>Supplier</th>
+            <th>Quality</th>
+            <th>Note</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let supplier of comparisonResults">
+            <td>{{ supplier.name }}</td>
+            <td>{{ supplier.qualiteService }}/10</td>
+            <td>{{ supplier.note }}/10</td>
+          </tr>
+        </tbody>
+      </table>
+      <button (click)="closeComparison()" class="btn btn-secondary">Close</button>
+    </div>
+  </div>
+
+  <!-- Evaluation and Comparison Section -->
+  <div class="analysis-section">
+    <h3>Supplier Analysis</h3>
+    <div class="analysis-controls">
+      <div class="form-group">
+        <label>Select Supplier for Evaluation:</label>
+        <select [(ngModel)]="selectedSupplierId">
+          <option value="">Select a supplier</option>
+          <option *ngFor="let supplier of suppliers" [value]="supplier.id">{{ supplier.name }}</option>
+        </select>
+        <button (click)="evaluateSupplier()" class="btn btn-info">Evaluate</button>
+      </div>
+      <div class="form-group">
+        <label>Select Product for Comparison:</label>
+        <select [(ngModel)]="selectedProductId">
+          <option value="">Select a product</option>
+          <option *ngFor="let product of products" [value]="product.id">{{ product.name }}</option>
+        </select>
+        <button (click)="compareOffers()" class="btn btn-info">Compare Offers</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Purchase Histories List -->
+  <table class="table">
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Supplier</th>
+        <th>Product</th>
+        <th>Quantity</th>
+        <th>Delivery Delay (days)</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let history of histories" [class.active]="selectedHistory?.id === history.id">
+        <td>{{ history.id }}</td>
+        <td>{{ getSupplierName(history.supplierId) }}</td>
+        <td>{{ getProductName(history.productId) }}</td>
+        <td>{{ history.quantite }}</td>
+        <td>{{ history.delaiLivraison }}</td>
+        <td>
+          <button (click)="openForm(history)" class="btn btn-info">Edit</button>
+          <button (click)="deletePurchaseHistory(history.id!)" class="btn btn-danger">Delete</button>
+          <button (click)="selectHistory(history)" class="btn btn-secondary">View</button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+  <!-- Selected History Details -->
+  <div *ngIf="selectedHistory" class="details">
+    <h3>History Details</h3>
+    <p><strong>ID:</strong> {{ selectedHistory.id }}</p>
+    <p><strong>Supplier:</strong> {{ getSupplierName(selectedHistory.supplierId) }}</p>
+    <p><strong>Product:</strong> {{ getProductName(selectedHistory.productId) }}</p>
+    <p><strong>Quantity:</strong> {{ selectedHistory.quantite }}</p>
+    <p><strong>Delivery Delay:</strong> {{ selectedHistory.delaiLivraison }} days</p>
+  </div>
+</div>
