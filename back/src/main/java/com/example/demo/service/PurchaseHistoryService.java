@@ -1,20 +1,23 @@
 package com.example.demo.service;
 
 import com.example.demo.dto.PurchaseHistoryDto;
+import com.example.demo.dto.SupplierDto;
 import com.example.demo.entity.Product;
 import com.example.demo.entity.PurchaseHistory;
 import com.example.demo.entity.Supplier;
 import com.example.demo.repository.ProductRepository;
 import com.example.demo.repository.PurchaseHistoryRepository;
 import com.example.demo.repository.SupplierRepository;
-import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import lombok.RequiredArgsConstructor;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
+@Transactional
 public class PurchaseHistoryService {
 
     private final PurchaseHistoryRepository purchaseHistoryRepository;
@@ -76,14 +79,27 @@ public class PurchaseHistoryService {
     }
 
     // Comparaison des offres (simplifiée : par prix moyen)
-    public List<Supplier> compareOffers(Long productId) {
+    public List<SupplierDto> compareOffers(Long productId) {
         // Retourner les fournisseurs triés par note décroissante pour ce produit
         return purchaseHistoryRepository.findAll().stream()
                 .filter(h -> h.getProduct().getId().equals(productId))
                 .map(PurchaseHistory::getSupplier)
                 .distinct()
                 .sorted((s1, s2) -> Double.compare(evaluateSupplier(s2.getId()), evaluateSupplier(s1.getId())))
+                .map(this::mapToSupplierDto)
                 .collect(Collectors.toList());
+    }
+
+    private SupplierDto mapToSupplierDto(Supplier supplier) {
+        SupplierDto dto = new SupplierDto();
+        dto.setId(supplier.getId());
+        dto.setName(supplier.getName());
+        dto.setContactEmail(supplier.getContactEmail());
+        dto.setPhoneNumber(supplier.getPhoneNumber());
+        dto.setAddress(supplier.getAddress());
+        dto.setQualiteService(supplier.getQualiteService());
+        dto.setNote(supplier.getNote());
+        return dto;
     }
 
     private PurchaseHistoryDto mapToDto(PurchaseHistory purchaseHistory) {

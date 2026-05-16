@@ -31,3 +31,6 @@ public class Supplier {
 
     @Column(nullable = false)
     private Double note; // note globale
+
+}
+

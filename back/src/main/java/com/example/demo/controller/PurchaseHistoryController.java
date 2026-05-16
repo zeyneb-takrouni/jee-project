@@ -1,6 +1,7 @@
 package com.example.demo.controller;
 
 import com.example.demo.dto.PurchaseHistoryDto;
+import com.example.demo.dto.SupplierDto;
 import com.example.demo.entity.Supplier;
 import com.example.demo.service.PurchaseHistoryService;
 import jakarta.validation.Valid;
@@ -51,7 +52,7 @@ public class PurchaseHistoryController {
     }
 
     @GetMapping("/compare-offers/{productId}")
-    public ResponseEntity<List<Supplier>> compareOffers(@PathVariable Long productId) {
+    public ResponseEntity<List<SupplierDto>> compareOffers(@PathVariable Long productId) {
         return ResponseEntity.ok(purchaseHistoryService.compareOffers(productId));
     }
 }

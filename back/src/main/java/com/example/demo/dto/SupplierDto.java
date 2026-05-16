@@ -25,3 +25,6 @@ public class SupplierDto {
 
     @NotNull(message = "Note is required")
     private Double note;
+
+}
+

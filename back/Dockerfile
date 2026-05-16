@@ -1,24 +1,21 @@
-# Use the official OpenJDK 17 image as the base image
-FROM openjdk:17-jdk-slim
-
-# Set the working directory inside the container
+# Build stage: use Maven to compile and package the application
+FROM maven:3.9.4-eclipse-temurin-17 AS build
 WORKDIR /app
 
-# Copy the Maven wrapper and pom.xml to leverage Docker layer caching
-COPY mvnw pom.xml ./
-COPY .mvn .mvn
-
-# Download dependencies (this layer will be cached if pom.xml hasn't changed)
-RUN ./mvnw dependency:go-offline -B
-
-# Copy the source code
+# Copy pom and source
+COPY pom.xml ./
 COPY src ./src
 
-# Build the application
-RUN ./mvnw clean package -DskipTests
+# Package the application (skip tests to speed up build)
+RUN mvn -B -DskipTests clean package
 
-# Expose the port the app runs on
+# Runtime stage: use a slim JDK image to run the jar
+FROM eclipse-temurin:17-jdk
+WORKDIR /app
+
+# Copy the packaged jar from the build stage
+COPY --from=build /app/target/*.jar app.jar
+
 EXPOSE 8080
 
-# Run the application
-CMD ["java", "-jar", "target/back-0.0.1-SNAPSHOT.jar"]
+ENTRYPOINT ["java", "-jar", "/app/app.jar"]

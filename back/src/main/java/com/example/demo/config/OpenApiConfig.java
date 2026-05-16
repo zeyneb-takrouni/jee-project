@@ -10,9 +10,9 @@ public class OpenApiConfig {
 
     @Bean
     public OpenAPI customOpenAPI() {
-        return new OpenAPI()
+        return new OpenAPI()//Création d’un objet OpenAPI
                 .info(new Info()
-                        .title("Purchase and Supplier Management API")
+                        .title("Purchase and Supplier Management API")//Titre affiché dans Swagger UI
                         .version("1.0")
                         .description("API for managing purchases and suppliers"));
     }
