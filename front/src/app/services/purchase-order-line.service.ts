@@ -7,7 +7,7 @@ import { PurchaseOrderLine } from '../models/purchase-order-line.model';
   providedIn: 'root'
 })
 export class PurchaseOrderLineService {
-  private apiUrl = 'http://localhost:8080/api/purchase-order-lines';
+  private apiUrl = 'http://localhost:8081/api/purchase-order-lines';
 
   constructor(private http: HttpClient) {}
 
