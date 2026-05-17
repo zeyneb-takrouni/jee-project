@@ -1,100 +1,118 @@
 # Système de Gestion des Achats et des Fournisseurs
 
-## Description du Projet
+## 📋 Description du Projet
 
-Ce projet est une application web complète pour la gestion des achats et des fournisseurs. Il permet de gérer les fournisseurs, les commandes d'achat, les lignes de commande et l'historique des achats. L'application offre des fonctionnalités CRUD complètes ainsi que des analyses avancées comme l'évaluation des fournisseurs et la comparaison des offres.
+Application web complète pour la gestion des achats et des fournisseurs, permettant de :
+- Gérer les fournisseurs (informations de contact, notes, qualité de service)
+- Gérer les commandes d'achat et leurs lignes
+- Suivre l'historique des achats
+- Évaluer les fournisseurs
+- Comparer les offres pour un produit
 
-## Technologies Utilisées
+## 🛠 Technologies Utilisées
 
 ### Back-end
-- **Spring Boot 3.2.5** : Framework principal
-- **Spring Data JPA** : Gestion de la persistance des données
+- **Spring Boot 3.2.5** : Framework Java principal
+- **Spring Data JPA** : Gestion de la persistance avec Hibernate
 - **Spring Validation** : Validation des données d'entrée
-- **Spring Web** : Création d'APIs REST
-- **MySQL** : Base de données relationnelle
-- **H2** : Base de données en mémoire pour les tests
+- **Spring Web** : APIs REST
+- **MySQL 8.0** : Base de données relationnelle
 - **Lombok** : Réduction du code boilerplate
-- **SpringDoc OpenAPI** : Documentation automatique des APIs
+- **SpringDoc OpenAPI** : Documentation Swagger automatique
 
 ### Front-end
-- **Angular** (recommandé) : Framework pour l'interface utilisateur
+- **Angular 17+** : Framework TypeScript pour l'interface utilisateur
+- **TypeScript** : Langage de programmation
+- **RxJS** : Programmation réactive
 
 ### Déploiement
-- **Docker** : Conteneurisation de l'application
+- **Docker** : Conteneurisation multi-étapes
 - **Docker Compose** : Orchestration des services
+- **Nginx** : Serveur web pour le frontend
 
-## Architecture
+## 🏗 Architecture
 
 L'application suit une architecture en couches propre :
-- **Controller** : Gestion des requêtes HTTP et réponses
-- **Service** : Logique métier
-- **Repository** : Accès aux données
-- **Entity** : Modèles de données
-- **DTO** : Objets de transfert de données
 
-## Fonctionnalités
+### Back-end (Spring Boot)
+```
+src/main/java/com/example/demo/
+├── controller/      # Gestion des requêtes HTTP
+├── service/         # Logique métier
+├── repository/      # Accès aux données (JPA)
+├── entity/          # Modèles de données
+├── dto/             # Objets de transfert
+└── config/          # Configurations
+```
+
+### Front-end (Angular)
+```
+src/app/
+├── components/      # Composants de l'interface
+├── services/        # Services pour la communication API
+├── models/          # Modèles de données TypeScript
+└── app.routes.ts    # Configuration du routing
+```
+
+## 🎯 Fonctionnalités
 
 ### CRUD Complet
-- Gestion des fournisseurs (nom, contact, qualité_service, note)
-- Gestion des commandes d'achat (numéro, date, statut, montant)
-- Gestion des lignes de commande (produit, quantité, prix unitaire)
-- Gestion de l'historique des achats (fournisseur, produit, quantité, délai livraison)
+- ✅ **Fournisseurs** : Créer, lire, mettre à jour, supprimer
+- ✅ **Produits** : Gestion complète du catalogue
+- ✅ **Commandes d'achat** : Suivi des commandes avec statuts
+- ✅ **Lignes de commande** : Gestion des articles dans chaque commande
+- ✅ **Historique des achats** : Traçabilité complète
 
 ### Fonctions Avancées
-- **Évaluation des fournisseurs** : Calcul automatique d'une note basée sur la qualité de service, la note existante et les délais de livraison moyens
-- **Gestion des commandes** : Suivi des statuts et calcul automatique des montants totaux
-- **Comparaison des offres** : Classement des fournisseurs par note pour un produit donné
+- 🏆 **Évaluation des fournisseurs** : Note automatique basée sur qualité et délais
+- 📊 **Comparaison des offres** : Classement des fournisseurs par prix et qualité
+- 📈 **Suivi des statuts** : Gestion complète des états de commande
 
-## Installation et Exécution
+## 🚀 Installation et Exécution
 
 ### Prérequis
-- Java 17 ou supérieur
-- Maven 3.6+
-- Docker et Docker Compose (pour le déploiement conteneurisé)
-- MySQL (optionnel, si pas en Docker)
+- **Docker** & **Docker Compose** (recommandé)
+- Ou : Java 17+, Maven 3.6+, Node.js 20+, MySQL 8.0
 
-### Exécution Locale
+### 🐳 Déploiement avec Docker (Recommandé)
 
-1. Cloner le repository :
-   ```bash
-   git clone <repository-url>
-   cd projet_jee/back
-   ```
+**Lancer l'application complète :**
+```bash
+cd back
+docker-compose up --build
+```
 
-2. Configurer la base de données :
-   - Installer MySQL
-   - Créer une base de données `purchasing_db`
-   - Modifier `application.properties` si nécessaire
+**Services disponibles après le lancement :**
+- 🌐 **Frontend** : http://localhost (Angular sur Nginx)
+- 🔌 **Backend API** : http://localhost:8081/api
+- 📚 **Documentation API** : http://localhost:8081/swagger-ui.html
+- 🗄️ **MySQL** : localhost:3306
 
-3. Compiler et exécuter :
-   ```bash
-   mvn clean install
-   mvn spring-boot:run
-   ```
+**Identifiants de base de données :**
+- Utilisateur : root
+- Mot de passe : rootpassword
+- Base : purchase_db
 
-4. Accéder à l'application :
-   - API : http://localhost:8080
-   - Documentation Swagger : http://localhost:8080/swagger-ui.html
+### 💻 Exécution Locale (Sans Docker)
 
-### Déploiement avec Docker (Port 8081)
+#### Back-end (Spring Boot)
+```bash
+cd back
+mvn clean install
+mvn spring-boot:run
+```
+- API disponible : http://localhost:8080
+- Swagger : http://localhost:8080/swagger-ui.html
 
-Quand vous lancez `docker-compose up --build`, le backend est exposé sur :
-   - API : http://localhost:8081
-   - Documentation Swagger : http://localhost:8081/swagger-ui.html
+#### Front-end (Angular)
+```bash
+cd front
+npm install
+ng serve
+```
+- Application disponible : http://localhost:4200
 
-### Déploiement avec Docker
-
-1. Construire et lancer les conteneurs :
-   ```bash
-   docker-compose up --build
-   ```
-
-2. L'application sera accessible sur http://localhost:8081
-   - La base de données MySQL est accessible sur localhost:3306
-   - Utilisateur : root
-   - Mot de passe : root (configurable dans docker-compose.yml)
-
-## APIs Disponibles
+## 📡 APIs Disponibles
 
 ### Fournisseurs
 - `GET /api/suppliers` : Liste tous les fournisseurs
@@ -116,7 +134,7 @@ Quand vous lancez `docker-compose up --build`, le backend est exposé sur :
 - `POST /api/purchase-orders` : Crée une nouvelle commande
 - `PUT /api/purchase-orders/{id}` : Met à jour une commande
 - `DELETE /api/purchase-orders/{id}` : Supprime une commande
-- `GET /api/purchase-orders/{id}/total` : Calcule le montant total d'une commande
+- `GET /api/purchase-orders/{id}/total` : Calcule le montant total
 
 ### Lignes de Commande
 - `GET /api/purchase-order-lines` : Liste toutes les lignes
@@ -132,40 +150,39 @@ Quand vous lancez `docker-compose up --build`, le backend est exposé sur :
 - `PUT /api/purchase-histories/{id}` : Met à jour un historique
 - `DELETE /api/purchase-histories/{id}` : Supprime un historique
 - `GET /api/purchase-histories/evaluate-supplier/{supplierId}` : Évalue un fournisseur
-- `GET /api/purchase-histories/compare-offers/{productId}` : Compare les offres pour un produit
+- `GET /api/purchase-histories/compare-offers/{productId}` : Compare les offres
 
-## Validation des Données
+## ✅ Validation des Données
 
-Toutes les APIs utilisent la validation Spring avec les annotations suivantes :
+Toutes les APIs utilisent la validation Spring avec :
 - `@NotBlank` : Champs obligatoires non vides
 - `@NotNull` : Champs obligatoires non nuls
 - `@Email` : Validation du format email
 
-## Tests avec Postman
+## 🧪 Tests
 
-1. Importer la collection ou créer une nouvelle requête
+### Avec Postman
+1. Importer les collections ou créer des requêtes
 2. Endpoint de test : `GET http://localhost:8081/api/products`
 3. Les APIs acceptent et retournent du JSON
-4. Tous les endpoints nécessitent une validation des données
+4. Tous les endpoints valident les données
 
-## Déploiement Cloud (Google Cloud Platform)
+### Tests Unitaires
+```bash
+mvn test
+```
 
-Pour déployer sur GCP :
+## 🚢 Déploiement Cloud (GCP)
+
+Pour déployer sur Google Cloud Platform :
 1. Construire l'image Docker
 2. Pousser sur Google Container Registry
 3. Déployer sur Google Cloud Run ou Kubernetes Engine
 4. Configurer Cloud SQL pour la base de données
 
-## Tests
-
-Exécuter les tests :
-```bash
-mvn test
-```
-
 ## Contributeurs
 
-- [Zeyneb Takrouni]
+- Zeyneb Takrouni
 
 ## Licence
 
