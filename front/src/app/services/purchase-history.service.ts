@@ -8,7 +8,7 @@ import { Supplier } from '../models/supplier.model';
   providedIn: 'root'
 })
 export class PurchaseHistoryService {
-  private apiUrl = 'http://localhost:8081/api/purchase-histories';
+  private apiUrl = '/api/purchase-histories';
 
   constructor(private http: HttpClient) {}
 
